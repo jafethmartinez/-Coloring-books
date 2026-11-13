@@ -93,6 +93,10 @@ await tab.evaluate(() => document.fonts.ready);
 const pdfPath = join(outDir, 'animal-friends-coloring-book.pdf');
 await tab.pdf({ path: pdfPath, preferCSSPageSize: true, printBackground: true });
 
+// Everything except the cover, in one PDF (the "interior" for printing).
+const interiorPath = join(outDir, 'animal-friends-interior-no-cover.pdf');
+await tab.pdf({ path: interiorPath, pageRanges: `2-${pages.length}`, preferCSSPageSize: true, printBackground: true });
+
 // Also save every page as its own PDF in output/pages/.
 const pagesDir = join(outDir, 'pages');
 rmSync(pagesDir, { recursive: true, force: true });
