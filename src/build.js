@@ -3,7 +3,7 @@
 //   node src/build.js --blank-backs -> adds a blank page after every picture
 //                                     (so markers don't bleed through)
 import { chromium } from 'playwright';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { animals, colorize } from './animals.js';
@@ -46,9 +46,12 @@ const pictures = animals.map((a) => page(`
   <div class="art">${art(a.svg)}</div>`));
 
 const pages = [cover, owner];
-for (const p of pictures) {
-  if (args.has('--blank-backs')) pages.push(blank);
+// File names for the one-PDF-per-page copies (null = blank page, not saved).
+const names = ['cover', 'this-book-belongs-to'];
+for (const [i, p] of pictures.entries()) {
+  if (args.has('--blank-backs')) { pages.push(blank); names.push(null); }
   pages.push(p);
+  names.push(animals[i].name.toLowerCase());
 }
 
 const fontUrl = pathToFileURL(join(root, 'fonts', 'Fredoka-Bold.ttf')).href;
@@ -90,5 +93,16 @@ await tab.evaluate(() => document.fonts.ready);
 const pdfPath = join(outDir, 'animal-friends-coloring-book.pdf');
 await tab.pdf({ path: pdfPath, preferCSSPageSize: true, printBackground: true });
 
+// Also save every page as its own PDF in output/pages/.
+const pagesDir = join(outDir, 'pages');
+rmSync(pagesDir, { recursive: true, force: true });
+mkdirSync(pagesDir, { recursive: true });
+let n = 0;
+for (const [i, name] of names.entries()) {
+  if (!name) continue;
+  const file = join(pagesDir, `${String(++n).padStart(2, '0')}-${name}.pdf`);
+  await tab.pdf({ path: file, pageRanges: String(i + 1), preferCSSPageSize: true, printBackground: true });
+}
+
 await browser.close();
-console.log(`Wrote ${pdfPath} (${pages.length} pages)`);
+console.log(`Wrote ${pdfPath} (${pages.length} pages) and ${n} single-page PDFs in ${pagesDir}`);

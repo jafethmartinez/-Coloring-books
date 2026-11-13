@@ -3,6 +3,7 @@
 ## Animal Friends — a coloring book for kids
 
 **[Download the PDF](output/animal-friends-coloring-book.pdf)**: 14 letter-size pages (8.5 × 11 in).
+Every page is also saved as its own PDF in [`output/pages/`](output/pages/).
 
 - Cover page
 - "This book belongs to ____" page
