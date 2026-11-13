@@ -2,13 +2,14 @@
 
 ## Animal Friends — a coloring book for kids
 
-**[Download the PDF](output/animal-friends-coloring-book.pdf)**: 14 letter-size pages (8.5 × 11 in).
-Everything except the cover is in [one PDF](output/animal-friends-interior-no-cover.pdf) (13 pages).
+**[Download the PDF](output/animal-friends-coloring-book.pdf)**: 26 letter-size pages (8.5 × 11 in).
+Everything except the cover is in [one PDF](output/animal-friends-interior-no-cover.pdf) (25 pages).
 Every page is also saved as its own PDF in [`output/pages/`](output/pages/).
 
 - Cover page
 - "This book belongs to ____" page
-- 12 animals: Cat, Dog, Fish, Owl, Turtle, Elephant, Lion, Bunny, Pig, Frog, Snail, Bear
+- 24 animals: Cat, Dog, Fish, Owl, Turtle, Elephant, Lion, Bunny, Pig, Frog, Snail, Bear,
+  Duck, Penguin, Giraffe, Monkey, Mouse, Cow, Sheep, Panda, Fox, Octopus, Whale, Crab
 
 Every picture uses big, simple shapes and thick outlines, made for ages 3–8.
 
