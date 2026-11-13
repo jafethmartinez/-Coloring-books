@@ -40,9 +40,20 @@ const flower = (x, y) =>
   ring(x, y, 11, 5, (px, py) => `<circle cx="${px}" cy="${py}" r="8" stroke-width="4"/>`) +
   `<circle cx="${x}" cy="${y}" r="6" stroke-width="4"/>`;
 
+// Returns the drawing with its white shapes painted in the given colors (used on the cover).
+export const colorize = (svg, colors = []) => {
+  let i = 0;
+  return svg.replace(/<(\w+)([^>]*)\/>/g, (whole, tag, attrs) => {
+    if (/fill="(#111|none|#fff)"/.test(attrs) || i >= colors.length) return whole;
+    return `<${tag} fill="${colors[i++]}"${attrs}/>`;
+  });
+};
+
 export const animals = [
   {
     name: 'Cat',
+    // Fill colors for the cover, in drawing order of the white shapes.
+    coverColors: ['#FFD23F','#FFD23F','#F79B3A','#F79B3A','#FFE3C2','#F79B3A','#F79B3A','#FFA8C5','#FFA8C5','#F79B3A','#FFE3C2','#FFE3C2','#FFD23F'],
     svg: `
       ${star(50, 50, 18)}${star(350, 60, 14)}
       <path d="M268,330 C345,335 360,255 330,225 C322,217 309,224 314,234 C335,270 320,302 262,300 Z"/>
@@ -65,6 +76,8 @@ export const animals = [
   },
   {
     name: 'Dog',
+    // Fill colors for the cover, in drawing order of the white shapes.
+    coverColors: ['#FF5C8A','#FF5C8A','#C8894E','#C8894E','#F3DDBF','#C8894E','#C8894E','#C8894E','#7A4A26','#7A4A26','#7A4A26','#F3DDBF','#3BA4F5','#FFD23F','#F3DDBF','#F3DDBF'],
     svg: `
       ${heart(55, 45, 1.3)}${heart(340, 60, 1)}
       <path d="M275,320 C330,310 345,250 330,220 C325,210 312,214 314,226 C320,260 305,290 270,295 Z"/>
@@ -88,6 +101,8 @@ export const animals = [
   },
   {
     name: 'Fish',
+    // Fill colors for the cover, in drawing order of the white shapes.
+    coverColors: ['#BDE8FF','#BDE8FF','#BDE8FF','#FF7A45','#FF7A45','#FF7A45','#FFB238','#fff'],
     svg: `
       <circle cx="60" cy="70" r="14" stroke-width="4"/><circle cx="85" cy="40" r="9" stroke-width="4"/><circle cx="70" cy="18" r="6" stroke-width="4"/>
       <path d="M290,200 L375,120 Q355,200 375,280 Z"/>
@@ -106,6 +121,8 @@ export const animals = [
   },
   {
     name: 'Owl',
+    // Fill colors for the cover, in drawing order of the white shapes.
+    coverColors: ['#FFD23F','#FFE66D','#8B5A2B','#8E6CCF','#8E6CCF','#8E6CCF','#D9C8F5','#6A4BAE','#6A4BAE','#FFE66D','#FFE66D','#fff','#fff','#FF9F1C','#FF9F1C','#FF9F1C'],
     svg: `
       ${star(355, 50, 16)}
       <path transform="translate(-245 -20)" d="M300,85 a40,40 0 1 0 40,45 a32,32 0 1 1 -40,-45 Z" stroke-width="5"/>

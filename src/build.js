@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { animals } from './animals.js';
+import { animals, colorize } from './animals.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = join(root, 'output');
@@ -22,10 +22,16 @@ const art = (inner, size = '100%') => `
 const page = (body, cls = '') => `<section class="page ${cls}"><div class="frame">${body}</div></section>`;
 const blank = '<section class="page blank"></section>';
 
+const rainbow = ['#FF5C8A', '#FF9F1C', '#FFD23F', '#4CC38A', '#3BA4F5', '#8E6CCF'];
+const colorTitle = (text) => {
+  let n = 0;
+  return text.split('').map((ch) => (ch === ' ' ? '<br>' : `<span style="color:${rainbow[n++ % rainbow.length]}">${ch}</span>`)).join('');
+};
+const tiles = ['#FFF1C9', '#FFDDE7', '#D6F0FF', '#E6DCFA'];
 const cover = page(`
-  <h1 class="outline big">${TITLE}</h1>
+  <h1 class="outline big">${colorTitle(TITLE)}</h1>
   <div class="cover-grid">
-    ${animals.slice(0, 4).map((a) => `<div>${art(a.svg)}</div>`).join('')}
+    ${animals.slice(0, 4).map((a, i) => `<div style="background:${tiles[i]}">${art(colorize(a.svg, a.coverColors))}</div>`).join('')}
   </div>
   <p class="sub">${SUBTITLE}</p>`, 'cover');
 
@@ -62,7 +68,12 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><style>
   .art { width: 6.4in; height: 6.4in; margin-bottom: 0.3in; }
   .cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.15in; width: 6in; }
   .cover-grid div { aspect-ratio: 1; }
+  .cover .frame { background: linear-gradient(#BFE6FF, #E9F7FF 55%, #C9F2D4); }
+  .cover .big { font-size: 84pt; text-shadow: 4px 5px 0 #111; }
+  .cover-grid div { border: 5px solid #111; border-radius: 24px; padding: 6px; }
   .sub { font-size: 26pt; }
+  .cover .sub { background: #FF5C8A; color: #fff; border: 5px solid #111; border-radius: 999px;
+                padding: 0.08in 0.4in; -webkit-text-stroke: 1.5px #111; paint-order: stroke fill; }
   .nameline { width: 80%; border-bottom: 5px solid #111; height: 0.9in; }
   .owner-art { width: 5in; height: 5in; }
   .hint { font-size: 17pt; text-align: center; }
