@@ -27,3 +27,22 @@ node src/build.js --blank-backs  # adds a blank page behind every picture
 ```
 
 The title font is [Fredoka](https://fonts.google.com/specimen/Fredoka) (SIL Open Font License).
+
+## Amazon KDP (paperback) files
+
+Ready-to-upload files are in [`output/kdp/`](output/kdp/), for two trim sizes:
+
+| Trim size | Interior (upload as "Manuscript") | Cover (front + spine + back) |
+|---|---|---|
+| **6 × 9 in** | `animal-friends-interior-6x9.pdf` (25 pages) | `animal-friends-kdp-cover-6x9.pdf` (12.306 × 9.25 in) |
+| 8.5 × 11 in | `animal-friends-interior-8.5x11.pdf` (25 pages) | `animal-friends-kdp-cover-8.5x11.pdf` (17.306 × 11.25 in) |
+
+KDP settings to choose: **Black & white interior, white paper**, trim size to match the files,
+**Bleed: No bleed**, cover finish matte or glossy. The cover already includes 0.125 in bleed
+and leaves the bottom-right of the back cover empty for the barcode.
+
+Rebuild them with:
+```bash
+node src/build.js --trim=6x9 && node src/kdp-cover.js --trim=6x9
+```
+(Exact page sizes are set with `tools/set_pdf_size.py`, which needs `pip install pypdf`.)
